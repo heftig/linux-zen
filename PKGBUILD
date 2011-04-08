@@ -7,8 +7,8 @@ pkgname=('kernel26-zen' 'kernel26-zen-headers' 'kernel26-zen-docs') # Build -zen
 # pkgname=kernel26-custom       # Build kernel with a different name
 _kernelname=${pkgname#kernel26}
 pkgver=2.6.38.2
-pkgrel=1
-_commit=a4999bd
+pkgrel=2
+_commit=dcab5c2
 makedepends=('xmlto' 'docbook-xsl')
 arch=(i686 x86_64)
 license=('GPL2')
@@ -20,11 +20,11 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/$_srcname.tar.bz2
         config config.x86_64 config.diff config.x86_64.diff
         # standard config files for mkinitcpio ramdisk
         kernel26.preset)
-md5sums=('f968cfd9bf7f3664d75f4e23f0905fbe'
+md5sums=('583a2fd297855e00642fd43f8d949256'
          'f66543886835ab8599b29cd0c48aa66d'
          'd866bcc06672fee17736bd5022f700fe'
-         '0864d9907efdd79d58eefe2a37ce4434'
-         '77b4c7b0d4813152a80d47f06610ad14'
+         'ecdbe437ebc392c187bac0810461b92d'
+         'ad79f7e8ff792ce969e48cf11641d01e'
          'f0e9ee7322046ce84ef56f3dfa893a24')
 
 build() {
@@ -80,7 +80,7 @@ package_kernel26-zen() {
   # kernel24 support is dropped since glibc24
 
   # Additional modules we already have
-  provides=('vhba-module' 'tp_smapi')
+  provides=('vhba-module' 'tp_smapi' 'aufs2')
   install=kernel26.install
   optdepends=('crda: to set the correct wireless channels of your country')
 
