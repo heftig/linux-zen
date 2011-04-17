@@ -7,7 +7,7 @@ pkgname=('kernel26-zen' 'kernel26-zen-headers' 'kernel26-zen-docs') # Build -zen
 # pkgname=kernel26-custom       # Build kernel with a different name
 _kernelname=${pkgname#kernel26}
 pkgver=2.6.38.3
-pkgrel=1
+pkgrel=2
 _commit=b8d59a7
 makedepends=('xmlto' 'docbook-xsl')
 arch=(i686 x86_64)
@@ -21,8 +21,8 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/$_srcname.tar.bz2
         # standard config files for mkinitcpio ramdisk
         kernel26.preset)
 md5sums=('90b1d626d83473801bb5b6d7eb36086a'
-         'f66543886835ab8599b29cd0c48aa66d'
-         'd866bcc06672fee17736bd5022f700fe'
+         'c21c8595204ae0f53ee43dde52ef7fff'
+         '53296fefa8bbcdfa12754480a0ce8a36'
          'ecdbe437ebc392c187bac0810461b92d'
          'ad79f7e8ff792ce969e48cf11641d01e'
          'f0e9ee7322046ce84ef56f3dfa893a24')
@@ -131,7 +131,8 @@ package_kernel26-zen-headers() {
     ${pkgdir}/usr/src/linux-${_kernver}/.config
   mkdir -p ${pkgdir}/usr/src/linux-${_kernver}/include
 
-  for i in acpi asm-generic config generated linux math-emu media net pcmcia scsi sound trace video xen; do
+  for i in acpi asm-generic config crypto drm generated linux math-emu \
+    media net pcmcia scsi sound trace video xen; do
     cp -a include/$i ${pkgdir}/usr/src/linux-${_kernver}/include/
   done
 
@@ -204,18 +205,6 @@ package_kernel26-zen-headers() {
   mkdir -p ${pkgdir}/usr/src/linux-${_kernver}/fs/xfs
   mkdir -p ${pkgdir}/usr/src/linux-${_kernver}/mm
   cp fs/xfs/xfs_sb.h ${pkgdir}/usr/src/linux-${_kernver}/fs/xfs/xfs_sb.h
-  # add headers vor virtualbox
-  # in reference to:
-  # http://bugs.archlinux.org/task/14568
-  cp -a include/drm $pkgdir/usr/src/linux-${_kernver}/include/
-  # add headers for broadcom wl
-  # in reference to:
-  # http://bugs.archlinux.org/task/14568
-  cp -a include/trace $pkgdir/usr/src/linux-${_kernver}/include/
-  # add headers for crypto modules
-  # in reference to:
-  # http://bugs.archlinux.org/task/22081
-  cp -a include/crypto $pkgdir/usr/src/linux-${_kernver}/include/
   # copy in Kconfig files
   for i in `find . -name "Kconfig*"`; do 
     mkdir -p ${pkgdir}/usr/src/linux-${_kernver}/`echo $i | sed 's|/Kconfig.*||'`
