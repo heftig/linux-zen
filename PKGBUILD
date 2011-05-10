@@ -6,9 +6,9 @@ pkgbase=kernel26-zen
 pkgname=('kernel26-zen' 'kernel26-zen-headers' 'kernel26-zen-docs') # Build -zen kernel
 # pkgname=kernel26-custom       # Build kernel with a different name
 _kernelname=${pkgname#kernel26}
-pkgver=2.6.38.5
+pkgver=2.6.38.6
 pkgrel=1
-_commit=e32d649
+_commit=a3c54ec
 makedepends=('xmlto' 'docbook-xsl')
 arch=(i686 x86_64)
 license=('GPL2')
@@ -20,11 +20,11 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/$_srcname.tar.bz2
         config config.x86_64 config.diff config.x86_64.diff
         # standard config files for mkinitcpio ramdisk
         kernel26.preset)
-md5sums=('5de3a86f3ce85efa99e2dc8aa710ebbd'
-         'da6114b415bb8eab471fae496a70fcba'
-         '39ead6257d74ab816bb8c2205bc9c31f'
-         'd2478c5534f6703bc99c400da206a643'
-         'c29408fe581ba54412f26aab2fb87442'
+md5sums=('207afe5c1993738cda36f76437f14a59'
+         '9190ad35cc77d57f40c16ee636c3a1dc'
+         '3e458d099ee7d764728998911efdf600'
+         '6d117b22ac22d2274f93b992eb3d2522'
+         '0e436a855700d50d0f70db6b751d05b4'
          'f0e9ee7322046ce84ef56f3dfa893a24')
 
 build() {
