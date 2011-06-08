@@ -6,9 +6,9 @@ pkgbase=kernel26-zen
 pkgname=('kernel26-zen' 'kernel26-zen-headers' 'kernel26-zen-docs') # Build -zen kernel
 # pkgname=kernel26-custom       # Build kernel with a different name
 _kernelname=${pkgname#kernel26}
-pkgver=2.6.38.7
+pkgver=2.6.39.1
 pkgrel=1
-_commit=7820806
+_commit=6d6d304
 makedepends=('xmlto' 'docbook-xsl')
 arch=(i686 x86_64)
 license=('GPL2')
@@ -20,11 +20,11 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/$_srcname.tar.bz2
         config config.x86_64 config.diff config.x86_64.diff
         # standard config files for mkinitcpio ramdisk
         kernel26.preset)
-md5sums=('a98c3059eb0f4e4e1faf2cffb5f4d675'
-         '9190ad35cc77d57f40c16ee636c3a1dc'
-         '3e458d099ee7d764728998911efdf600'
-         '2979bac3cf13dc1a441e2830421f6499'
-         '19a21a194f356f13d577094d6b71fc10'
+md5sums=('532dbf1860617e27b9b14c7beb875260'
+         'a855fd251af3332261536a9e7be32ec3'
+         'ad2e8cd08c41c3b09936fcfa269c3166'
+         'aa61f5bfe7a5b3b60e19a1040ce70ee3'
+         '47b9fa0f9f37b699a0873a8782de7779'
          'f0e9ee7322046ce84ef56f3dfa893a24')
 
 build() {
@@ -80,7 +80,7 @@ package_kernel26-zen() {
   # kernel24 support is dropped since glibc24
 
   # Additional modules we already have
-  provides=('vhba-module' 'tp_smapi' 'aufs2')
+  provides=('vhba-module' 'tp_smapi')
   install=kernel26.install
   optdepends=('crda: to set the correct wireless channels of your country')
 
@@ -162,8 +162,6 @@ package_kernel26-zen-headers() {
    mkdir -p ${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/$i
    cp -a drivers/media/video/$i/*.h ${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/$i
   done
-  mkdir -p ${pkgdir}/usr/src/linux-${_kernver}/drivers/staging/usbvideo/
-  cp -a drivers/staging/usbvideo/*.h ${pkgdir}/usr/src/linux-${_kernver}/drivers/staging/usbvideo/
   # add docbook makefile
   install -D -m644 Documentation/DocBook/Makefile \
     ${pkgdir}/usr/src/linux-${_kernver}/Documentation/DocBook/Makefile
