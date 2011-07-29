@@ -4,30 +4,32 @@
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-pkgname=("$pkgbase" "$pkgbase-headers" "$pkgbase-docs")
+pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
 _srcname=zen-stable-02f8c6a
-pkgver=3.0.0
+pkgver=3.0
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'net-tools')
 options=('!strip')
-source=(http://git.zen-kernel.org/zen-stable/snapshot/$_srcname.tar.bz2
+source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'fix-i915.patch')
+        'fix-i915.patch'
+        'change-default-console-loglevel.patch')
 md5sums=('f890670556fc493154e4cfdd34a8507a'
          'fc6aae0fb4d70feff92ec762d29dee45'
          'fd5a1712ddea696eee5255de2d854218'
          'eb14dcfd80c00852ef81ded6e826826a'
-         '263725f20c0b9eb9c353040792d644e5')
+         '263725f20c0b9eb9c353040792d644e5'
+         '9d3c56a4b999c8bfbd4018089a62f662')
 
 build() {
-  cd "$srcdir/$_srcname"
+  cd "${srcdir}/${_srcname}"
 
   #patch -p1 -i "${srcdir}/patch-${pkgver}"
 
@@ -37,7 +39,12 @@ build() {
   # fix #19234 i1915 display size
   patch -Np1 -i "${srcdir}/fix-i915.patch"
 
-  if [ "$CARCH" = "x86_64" ]; then
+  # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
+  # remove this when a Kconfig knob is made available by upstream
+  # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
+  patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
+
+  if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
   else
     cat "${srcdir}/config" > ./.config
@@ -48,11 +55,11 @@ build() {
     sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
   fi
 
-  # remove the extraversion from Makefile
+  # remove the sublevel from Makefile
   # this ensures our kernel version is always 3.X-ARCH
   # this way, minor kernel updates will not break external modules
   # we need to change this soon, see FS#16702
-  sed -i 's|^EXTRAVERSION = .*$|EXTRAVERSION = |g' Makefile
+  sed -ri 's|^(SUBLEVEL =).*|\1|' Makefile
 
   # get kernel version
   make prepare
@@ -69,10 +76,10 @@ build() {
   yes "" | make config >/dev/null
 
   # save configuration for later reuse
-  if [ "$CARCH" = "x86_64" ]; then
-    cat .config > "$startdir/config.x86_64.last"
+  if [ "${CARCH}" = "x86_64" ]; then
+    cat .config > "${startdir}/config.x86_64.last"
   else
-    cat .config > "$startdir/config.last"
+    cat .config > "${startdir}/config.last"
   fi
 
   ####################
@@ -86,20 +93,20 @@ build() {
 }
 
 _package() {
-  pkgdesc="The $pkgbase kernel and modules"
+  pkgdesc="The ${pkgbase} kernel and modules"
   #groups=('base')
   depends=('coreutils' 'linux-firmware' 'module-init-tools>=3.16' 'mkinitcpio>=0.7')
   optdepends=('crda: to set the correct wireless channels of your country')
-  provides=("kernel26${_kernelname}=$pkgver")
+  provides=("kernel26${_kernelname}=${pkgver}")
   conflicts=("kernel26${_kernelname}")
   replaces=("kernel26${_kernelname}")
-  backup=("etc/mkinitcpio.d/$pkgname.preset")
+  backup=("etc/mkinitcpio.d/${pkgbase}.preset")
   install=linux.install
 
   # Additional modules we already have in ZEN
   provides+=('vhba-module' 'tp_smapi')
 
-  cd "${srcdir}/$_srcname"
+  cd "${srcdir}/${_srcname}"
 
   KARCH=x86
 
@@ -108,13 +115,13 @@ _package() {
 
   mkdir -p "${pkgdir}"/{lib/modules,lib/firmware,boot}
   make LOCALVERSION= INSTALL_MOD_PATH="${pkgdir}" modules_install
-  cp arch/$KARCH/boot/bzImage "${pkgdir}/boot/vmlinuz-$pkgbase"
+  cp arch/$KARCH/boot/bzImage "${pkgdir}/boot/vmlinuz-${pkgbase}"
 
   # add vmlinux
   install -D -m644 vmlinux "${pkgdir}/usr/src/linux-${_kernver}/vmlinux"
 
   # install fallback mkinitcpio.conf file and preset file for kernel
-  install -D -m644 "${srcdir}/linux.preset" "${pkgdir}/etc/mkinitcpio.d/$pkgbase.preset"
+  install -D -m644 "${srcdir}/linux.preset" "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
 
   # set correct depmod command for install
   sed \
@@ -122,11 +129,11 @@ _package() {
     -e  "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/" \
     -i "${startdir}/linux.install"
   sed \
-    -e "1s|'linux.*'|'$pkgbase'|" \
-    -e "s|ALL_kver=.*|ALL_kver=\"/boot/vmlinuz-$pkgbase\"|" \
-    -e "s|default_image=.*|default_image=\"/boot/initramfs-$pkgbase.img\"|" \
-    -e "s|fallback_image=.*|fallback_image=\"/boot/initramfs-$pkgbase-fallback.img\"|" \
-    -i "${pkgdir}/etc/mkinitcpio.d/$pkgbase.preset"
+    -e "1s|'linux.*'|'${pkgbase}'|" \
+    -e "s|ALL_kver=.*|ALL_kver=\"/boot/vmlinuz-${pkgbase}\"|" \
+    -e "s|default_image=.*|default_image=\"/boot/initramfs-${pkgbase}.img\"|" \
+    -e "s|fallback_image=.*|fallback_image=\"/boot/initramfs-${pkgbase}-fallback.img\"|" \
+    -i "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
 
   # remove build and source links
   rm -f "${pkgdir}"/lib/modules/${_kernver}/{source,build}
@@ -139,8 +146,8 @@ _package() {
 }
 
 _package-headers() {
-  pkgdesc="Header files and scripts for building modules for $pkgbase kernel"
-  provides=("kernel26${_kernelname}-headers=$pkgver")
+  pkgdesc="Header files and scripts for building modules for ${pkgbase} kernel"
+  provides=("kernel26${_kernelname}-headers=${pkgver}")
   conflicts=("kernel26${_kernelname}-headers")
   replaces=("kernel26${_kernelname}-headers")
 
@@ -149,7 +156,7 @@ _package-headers() {
   cd "${pkgdir}/lib/modules/${_kernver}"
   ln -sf ../../../usr/src/linux-${_kernver} build
 
-  cd "${srcdir}/$_srcname"
+  cd "${srcdir}/${_srcname}"
   install -D -m644 Makefile \
     "${pkgdir}/usr/src/linux-${_kernver}/Makefile"
   install -D -m644 kernel/Makefile \
@@ -161,7 +168,7 @@ _package-headers() {
 
   for i in acpi asm-generic config crypto drm generated linux math-emu \
     media net pcmcia scsi sound trace video xen; do
-    cp -a include/$i "${pkgdir}/usr/src/linux-${_kernver}/include/"
+    cp -a include/${i} "${pkgdir}/usr/src/linux-${_kernver}/include/"
   done
 
   # copy arch includes for external modules
@@ -176,15 +183,15 @@ _package-headers() {
   chmod og-w -R "${pkgdir}/usr/src/linux-${_kernver}/scripts"
   mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/.tmp_versions"
 
-  mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/arch/$KARCH/kernel"
+  mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/arch/${KARCH}/kernel"
 
-  cp arch/$KARCH/Makefile "${pkgdir}/usr/src/linux-${_kernver}/arch/$KARCH/"
+  cp arch/${KARCH}/Makefile "${pkgdir}/usr/src/linux-${_kernver}/arch/${KARCH}/"
 
-  if [ "$CARCH" = "i686" ]; then
-    cp arch/$KARCH/Makefile_32.cpu "${pkgdir}/usr/src/linux-${_kernver}/arch/$KARCH/"
+  if [ "${CARCH}" = "i686" ]; then
+    cp arch/${KARCH}/Makefile_32.cpu "${pkgdir}/usr/src/linux-${_kernver}/arch/${KARCH}/"
   fi
 
-  cp arch/$KARCH/kernel/asm-offsets.s "${pkgdir}/usr/src/linux-${_kernver}/arch/$KARCH/kernel/"
+  cp arch/${KARCH}/kernel/asm-offsets.s "${pkgdir}/usr/src/linux-${_kernver}/arch/${KARCH}/kernel/"
 
   # add headers for lirc package
   mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video"
@@ -192,8 +199,8 @@ _package-headers() {
   cp drivers/media/video/*.h  "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/"
 
   for i in bt8xx cpia2 cx25840 cx88 em28xx et61x251 pwc saa7134 sn9c102; do
-    mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/$i"
-    cp -a drivers/media/video/$i/*.h "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/$i"
+    mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/${i}"
+    cp -a drivers/media/video/${i}/*.h "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/${i}"
   done
 
   # add docbook makefile
@@ -246,8 +253,8 @@ _package-headers() {
 
   # copy in Kconfig files
   for i in `find . -name "Kconfig*"`; do
-    mkdir -p "${pkgdir}"/usr/src/linux-${_kernver}/`echo $i | sed 's|/Kconfig.*||'`
-    cp $i "${pkgdir}/usr/src/linux-${_kernver}/$i"
+    mkdir -p "${pkgdir}"/usr/src/linux-${_kernver}/`echo ${i} | sed 's|/Kconfig.*||'`
+    cp ${i} "${pkgdir}/usr/src/linux-${_kernver}/${i}"
   done
 
   chown -R root.root "${pkgdir}/usr/src/linux-${_kernver}"
@@ -255,13 +262,13 @@ _package-headers() {
 
   # strip scripts directory
   find "${pkgdir}/usr/src/linux-${_kernver}/scripts" -type f -perm -u+w 2>/dev/null | while read binary ; do
-    case "$(file -bi "$binary")" in
+    case "$(file -bi "${binary}")" in
       *application/x-sharedlib*) # Libraries (.so)
-        /usr/bin/strip $STRIP_SHARED "$binary";;
+        /usr/bin/strip ${STRIP_SHARED} "${binary}";;
       *application/x-archive*) # Libraries (.a)
-        /usr/bin/strip $STRIP_STATIC "$binary";;
+        /usr/bin/strip ${STRIP_STATIC} "${binary}";;
       *application/x-executable*) # Binaries
-        /usr/bin/strip $STRIP_BINARIES "$binary";;
+        /usr/bin/strip ${STRIP_BINARIES} "${binary}";;
     esac
   done
 
@@ -270,25 +277,25 @@ _package-headers() {
 }
 
 _package-docs() {
-  pkgdesc="Kernel hackers manual - HTML documentation that comes with the $pkgbase kernel"
-  provides=("kernel26${_kernelname}-docs=$pkgver")
+  pkgdesc="Kernel hackers manual - HTML documentation that comes with the ${pkgbase} kernel"
+  provides=("kernel26${_kernelname}-docs=${pkgver}")
   conflicts=("kernel26${_kernelname}-docs")
   replaces=("kernel26${_kernelname}-docs")
 
-  cd "${srcdir}/$_srcname"
+  cd "${srcdir}/${_srcname}"
 
-  mkdir -p "$pkgdir/usr/src/linux-$_kernver"
-  mv Documentation "$pkgdir/usr/src/linux-$_kernver"
-  find "$pkgdir" -type f -exec chmod 444 {} \;
-  find "$pkgdir" -type d -exec chmod 755 {} \;
+  mkdir -p "${pkgdir}/usr/src/linux-${_kernver}"
+  mv Documentation "${pkgdir}/usr/src/linux-${_kernver}"
+  find "${pkgdir}" -type f -exec chmod 444 {} \;
+  find "${pkgdir}" -type d -exec chmod 755 {} \;
 
   # remove a file already in linux package
-  rm -f "$pkgdir/usr/src/linux-$_kernver/Documentation/DocBook/Makefile"
+  rm -f "${pkgdir}/usr/src/linux-${_kernver}/Documentation/DocBook/Makefile"
 }
 
 for _p in ${pkgname[@]}; do
   eval "package_${_p}() {
-    _package${_p#$pkgbase}
+    _package${_p#${pkgbase}}
   }"
 done
 
