@@ -6,9 +6,9 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-02f8c6a
-pkgver=3.0
-pkgrel=1
+_srcname=zen-stable-9952ec8
+pkgver=3.0.1
+pkgrel=0.1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -21,9 +21,9 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'linux.preset'
         'fix-i915.patch'
         'change-default-console-loglevel.patch')
-md5sums=('f890670556fc493154e4cfdd34a8507a'
-         'fc6aae0fb4d70feff92ec762d29dee45'
-         'fd5a1712ddea696eee5255de2d854218'
+md5sums=('e42cb2a9727b32442c8f67bfe48a8516'
+         '235850c90a971989f05c754fa3e865b2'
+         'c5ade391863b7450b6a69c6b9b336bf3'
          'eb14dcfd80c00852ef81ded6e826826a'
          '263725f20c0b9eb9c353040792d644e5'
          '9d3c56a4b999c8bfbd4018089a62f662')
@@ -94,7 +94,7 @@ build() {
 
 _package() {
   pkgdesc="The ${pkgbase} kernel and modules"
-  #groups=('base')
+  [ "${pkgbase}" == "linux" ] && groups=('base')
   depends=('coreutils' 'linux-firmware' 'module-init-tools>=3.16' 'mkinitcpio>=0.7')
   optdepends=('crda: to set the correct wireless channels of your country')
   provides=("kernel26${_kernelname}=${pkgver}")
@@ -137,8 +137,6 @@ _package() {
 
   # remove build and source links
   rm -f "${pkgdir}"/lib/modules/${_kernver}/{source,build}
-  # add compat symlink for the kernel image
-  ln -sf vmlinuz-${pkgname} "${pkgdir}/boot/vmlinuz26${_kernelname}"
   # remove the firmware
   rm -rf "${pkgdir}/lib/firmware"
   # gzip -9 all modules to safe 100MB of space
