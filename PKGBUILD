@@ -60,6 +60,7 @@ build() {
   # this way, minor kernel updates will not break external modules
   # we need to change this soon, see FS#16702
   sed -ri 's|^(SUBLEVEL =).*|\1|' Makefile
+  sed -ri 's|^(EXTRAVERSION =).*|\1|' Makefile
 
   # get kernel version
   make prepare
