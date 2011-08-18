@@ -6,8 +6,8 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-2d668eb
-pkgver=3.0.1
+_srcname=zen-stable-ad91197
+pkgver=3.0.3
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -21,7 +21,7 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'linux.preset'
         'fix-i915.patch'
         'change-default-console-loglevel.patch')
-md5sums=('dd40a0add6b81907454c3c2c30bd2c96'
+md5sums=('93f9094c872fb14199159fc177f9b765'
          '235850c90a971989f05c754fa3e865b2'
          'c5ade391863b7450b6a69c6b9b336bf3'
          'eb14dcfd80c00852ef81ded6e826826a'
