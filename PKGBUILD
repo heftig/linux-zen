@@ -6,9 +6,9 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-752a1b8
+_srcname=zen-stable-3fc9812
 pkgver=3.0.4
-pkgrel=2
+pkgrel=3
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -21,9 +21,9 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'linux.preset'
         'fix-i915.patch'
         'change-default-console-loglevel.patch')
-md5sums=('b5cfd983a49bb460ccddafb72fdb8e2b'
-         'b648659a91c9bb3a568b7c62aa04692c'
-         'f1010eead0e64777f58f7fab9a6ad33e'
+md5sums=('8b4df33c48109efa7b1641f0f772258f'
+         '73c976f5dfa2ff8c480282d1d0cbbbb4'
+         '516252001159f20b2efe7620780aba32'
          'eb14dcfd80c00852ef81ded6e826826a'
          '263725f20c0b9eb9c353040792d644e5'
          '9d3c56a4b999c8bfbd4018089a62f662')
@@ -105,7 +105,7 @@ _package() {
   install=linux.install
 
   # Additional modules we already have in ZEN
-  provides+=('vhba-module' 'tp_smapi')
+  provides+=('vhba-module' 'tp_smapi' 'aufs2')
 
   cd "${srcdir}/${_srcname}"
 
