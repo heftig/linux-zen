@@ -6,13 +6,13 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-3fc9812
-pkgver=3.0.4
-pkgrel=3
+_srcname=zen-stable-a3a4514
+pkgver=3.0.6
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'net-tools')
+makedepends=('xmlto' 'docbook-xsl')
 options=('!strip')
 source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         # the main kernel config files
@@ -21,9 +21,9 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'linux.preset'
         'fix-i915.patch'
         'change-default-console-loglevel.patch')
-md5sums=('8b4df33c48109efa7b1641f0f772258f'
-         '73c976f5dfa2ff8c480282d1d0cbbbb4'
-         '516252001159f20b2efe7620780aba32'
+md5sums=('e7c657f680c4e2438089db64796d9a4d'
+         'f8345a3843575269568421713f670785'
+         'b8aff189f5c8b27a4e4bf139b10cd112'
          'eb14dcfd80c00852ef81ded6e826826a'
          '263725f20c0b9eb9c353040792d644e5'
          '9d3c56a4b999c8bfbd4018089a62f662')
