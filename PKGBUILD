@@ -8,7 +8,7 @@ pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
 _srcname=zen-stable-a3a4514
 pkgver=3.0.6
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -22,8 +22,8 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'fix-i915.patch'
         'change-default-console-loglevel.patch')
 md5sums=('e7c657f680c4e2438089db64796d9a4d'
-         'f8345a3843575269568421713f670785'
-         'b8aff189f5c8b27a4e4bf139b10cd112'
+         '793da5b808fa072bf0957770356cfb8a'
+         '13510b089d19edab7bc446969775ba31'
          'eb14dcfd80c00852ef81ded6e826826a'
          '263725f20c0b9eb9c353040792d644e5'
          '9d3c56a4b999c8bfbd4018089a62f662')
