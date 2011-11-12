@@ -6,8 +6,8 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-d3e78d6
-pkgver=3.1.0
+_srcname=zen-stable-65606c6
+pkgver=3.1.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -22,21 +22,15 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'change-default-console-loglevel.patch'
         'i915-fix-ghost-tv-output.patch'
         'i915-fix-incorrect-error-message.patch'
-        'iwlagn-fix-NULL-pointer-dereference.patch'
-        'dib0700-fix.patch'
-        'usb-add-reset-resume-quirk-for-several-webcams.patch'
-        'md-raid10-fix-bug-when-activating-a-hot-spare.patch')
-md5sums=('163a46f09706d6ecc231280047cb32af'
-         'b37ea9e2f8a1b410c65e4d851ee47b3a'
-         '38e55cf5d9a44ef279e61db90e020b10'
+        'usb-add-reset-resume-quirk-for-several-webcams.patch')
+md5sums=('b34ad1b8882d7a1c38b65cb5e145859b'
+         '56dac9a187ceb10caa52e84f584c22e0'
+         '480fca093655c81bb667bd9267d2e1c1'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          '263725f20c0b9eb9c353040792d644e5'
          'a50c9076012cb2dda49952dc6ec3e9c1'
-         '61a6be40e8e1e9eae5f23f241e7a0779'
-         '442334d777475e2a37db92d199672a28'
-         '52d41fa61e80277ace2b994412a0c856'
-         'de12ec5c342f945a95b2f12c2b85e6bf')
+         '52d41fa61e80277ace2b994412a0c856')
 
 build() {
   cd "${srcdir}/${_srcname}"
@@ -56,30 +50,14 @@ build() {
   # needed.
   patch -Np1 -i "${srcdir}/i915-fix-ghost-tv-output.patch"
 
-  # In 3.1.0, a DRM_DEBUG message is falsely declared as DRM_ERROR. This
+  # In 3.1.1, a DRM_DEBUG message is falsely declared as DRM_ERROR. This
   # worries users, as this message is displayed even at loglevel 4. Fix
   # this.
   patch -Np1 -i "${srcdir}/i915-fix-incorrect-error-message.patch"
 
-  # iwlagn has a critical bug that hangs the system on 3.1.0. A patch
-  # was posted, but didn't make it into the tree in time.
-  # http://marc.info/?l=linux-wireless&m=131840748927629&w=2
-  # FS#26674
-  patch -Np1 -i "${srcdir}/iwlagn-fix-NULL-pointer-dereference.patch"
-
-  # Fix dib0700 driver
-  # http://git.linuxtv.org/pb/media_tree.git/shortlog/refs/heads/for_v3.0
-  # FS#25939
-  patch -Np1 -i "${srcdir}/dib0700-fix.patch"
-
   # Add the USB_QUIRK_RESET_RESUME for several webcams
   # FS#26528
   patch -Np1 -i "${srcdir}/usb-add-reset-resume-quirk-for-several-webcams.patch"
-
-  # Fix RAID10 hot spare activation (critical)
-  # https://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git;a=blob_plain;f=queue-3.1/md-raid10-fix-bug-when-activating-a-hot-spare.patch;h=880849db5b7089b523f72c4d67a473e5330037fc;hb=HEAD
-  # FS#26767
-  patch -Np1 -i "${srcdir}/md-raid10-fix-bug-when-activating-a-hot-spare.patch"
 
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
