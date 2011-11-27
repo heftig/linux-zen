@@ -6,8 +6,8 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-04156bd
-pkgver=3.1.2
+_srcname=zen-stable-2d6ff98
+pkgver=3.1.3
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -23,7 +23,7 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'i915-fix-ghost-tv-output.patch'
         'i915-fix-incorrect-error-message.patch'
         'usb-add-reset-resume-quirk-for-several-webcams.patch')
-md5sums=('3828c33e68d1bc83bba481a14d50235c'
+md5sums=('e4725e4930c9dd66e2c7f43bc165edcc'
          'e6923d5ee8d78f7176a43b1b9f73ccd3'
          '2c296beb8a160700f03906b77d15c2b2'
          'eb14dcfd80c00852ef81ded6e826826a'
@@ -121,7 +121,7 @@ _package() {
   install=linux.install
 
   # Additional modules we already have in ZEN
-  provides+=('vhba-module' 'tp_smapi' 'aufs2')
+  provides+=('vhba-module' 'tp_smapi')
 
   cd "${srcdir}/${_srcname}"
 
