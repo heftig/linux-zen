@@ -6,8 +6,8 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-58471b8
-pkgver=3.1.5
+_srcname=zen-stable-e153ea9
+pkgver=3.2.0
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -20,23 +20,19 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
-        'i915-fix-ghost-tv-output.patch'
-        'i915-fix-incorrect-error-message.patch'
-        'usb-add-reset-resume-quirk-for-several-webcams.patch')
-md5sums=('a99f0ce0655e741a5e22ae5227a1deea'
-         'e6923d5ee8d78f7176a43b1b9f73ccd3'
-         '2c296beb8a160700f03906b77d15c2b2'
+        'i915-fix-ghost-tv-output.patch')
+md5sums=('005757cc2294a76a6d8be27ba119121f'
+         '2f56d01a48980707d3a93f8e0e967d50'
+         '39701f7269c7d3da26fd1fa043777625'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
-         '263725f20c0b9eb9c353040792d644e5'
-         'a50c9076012cb2dda49952dc6ec3e9c1'
-         '52d41fa61e80277ace2b994412a0c856')
+         '263725f20c0b9eb9c353040792d644e5')
 
 build() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  #patch -p1 -i "${srcdir}/patch-${pkgver}"
+  # patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
@@ -49,15 +45,6 @@ build() {
   # then dropped because the reasoning was unclear. However, it is clearly
   # needed.
   patch -Np1 -i "${srcdir}/i915-fix-ghost-tv-output.patch"
-
-  # In 3.1.1, a DRM_DEBUG message is falsely declared as DRM_ERROR. This
-  # worries users, as this message is displayed even at loglevel 4. Fix
-  # this.
-  patch -Np1 -i "${srcdir}/i915-fix-incorrect-error-message.patch"
-
-  # Add the USB_QUIRK_RESET_RESUME for several webcams
-  # FS#26528
-  patch -Np1 -i "${srcdir}/usb-add-reset-resume-quirk-for-several-webcams.patch"
 
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
