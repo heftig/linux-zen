@@ -6,8 +6,8 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-e153ea9
-pkgver=3.2.0
+_srcname=zen-stable-318ab7c
+pkgver=3.2.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -20,13 +20,15 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
-        'i915-fix-ghost-tv-output.patch')
-md5sums=('005757cc2294a76a6d8be27ba119121f'
-         '2f56d01a48980707d3a93f8e0e967d50'
-         '39701f7269c7d3da26fd1fa043777625'
+        'i915-fix-ghost-tv-output.patch'
+        'i915-gpu-finish.patch')
+md5sums=('4a46095d4c9b375d04b67cbd8ffec381'
+         '71372079bc34966de212a861d63b2ec3'
+         'e4415c13a1cc1759d3e9aed331640586'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
-         '263725f20c0b9eb9c353040792d644e5')
+         '263725f20c0b9eb9c353040792d644e5'
+         '4cd79aa147825837dc8bc9f6b736c0a0')
 
 build() {
   cd "${srcdir}/${_srcname}"
@@ -36,6 +38,10 @@ build() {
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
+
+  # fix FS#27883
+  # drm/i915: Only clear the GPU domains upon a successful finish
+  patch -Np1 -i "${srcdir}/i915-gpu-finish.patch"
 
   # Some chips detect a ghost TV output
   # mailing list discussion: http://lists.freedesktop.org/archives/intel-gfx/2011-April/010371.html
@@ -98,7 +104,7 @@ build() {
 
 _package() {
   pkgdesc="The ${pkgbase} kernel and modules"
-  [ "${pkgbase}" == "linux" ] && groups=('base')
+  [ "${pkgbase}" = "linux" ] && groups=('base')
   depends=('coreutils' 'linux-firmware' 'module-init-tools>=3.16' 'mkinitcpio>=0.7')
   optdepends=('crda: to set the correct wireless channels of your country')
   provides=("kernel26${_kernelname}=${pkgver}")
@@ -108,7 +114,8 @@ _package() {
   install=linux.install
 
   # Additional modules we already have in ZEN
-  provides+=('vhba-module' 'tp_smapi')
+  [ "${pkgbase}" = "linux-zen" ] && \
+    provides+=('vhba-module' 'tp_smapi')
 
   cd "${srcdir}/${_srcname}"
 
