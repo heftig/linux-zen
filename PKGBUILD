@@ -6,9 +6,9 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-318ab7c
+_srcname=zen-stable-255b591
 pkgver=3.2.1
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -22,9 +22,9 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'change-default-console-loglevel.patch'
         'i915-fix-ghost-tv-output.patch'
         'i915-gpu-finish.patch')
-md5sums=('4a46095d4c9b375d04b67cbd8ffec381'
-         '71372079bc34966de212a861d63b2ec3'
-         'e4415c13a1cc1759d3e9aed331640586'
+md5sums=('f7dfb8dcf5e0115c14fdf2fc633fa4ff'
+         'fa842e8235a672325d631eee6fcf5170'
+         '982e4f13c0c73787b1acb86ffe445524'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          '263725f20c0b9eb9c353040792d644e5'
@@ -115,7 +115,7 @@ _package() {
 
   # Additional modules we already have in ZEN
   [ "${pkgbase}" = "linux-zen" ] && \
-    provides+=('vhba-module' 'tp_smapi')
+    provides+=('vhba-module' 'tp_smapi' 'aufs3')
 
   cd "${srcdir}/${_srcname}"
 
