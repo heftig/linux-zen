@@ -6,9 +6,9 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
-_srcname=zen-stable-a97310c
-pkgver=3.2.1
-pkgrel=3
+_srcname=zen-stable-f2da494
+pkgver=3.2.2
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -22,7 +22,7 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'change-default-console-loglevel.patch'
         'i915-fix-ghost-tv-output.patch'
         'i915-gpu-finish.patch')
-md5sums=('90171a35e6c7b9c4b0e31fcadc0d9f5f'
+md5sums=('20a4a1fffa079c7fdfd49e05ae1dbc73'
          '79e72854f63fc3ff1c8a43cdfa3f34da'
          '60ebbb70e996d3d330d9b2a52d5336ca'
          'eb14dcfd80c00852ef81ded6e826826a'
