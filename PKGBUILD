@@ -8,7 +8,7 @@ pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
 _srcname=zen-stable-4cec216
 pkgver=3.2.7
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -23,8 +23,8 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'i915-fix-ghost-tv-output.patch'
         'i915-gpu-finish.patch')
 md5sums=('d747406dcf3344d5d954b9d7e514c11c'
-         '1e03a32b6c6be09acb90a8d34790e58d'
-         '16d437f5d3c753edfc4b87cf0f5b957d'
+         'c6a9ca59070b84447b28f0f3c1821675'
+         '21393fd558869aac464767b6c6e64261'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          '263725f20c0b9eb9c353040792d644e5'
