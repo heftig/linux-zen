@@ -8,7 +8,7 @@ pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 _kernelname=${pkgbase#linux}
 _srcname=zen-stable-4cec216
 pkgver=3.2.7
-pkgrel=2
+pkgrel=3
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -21,14 +21,16 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'linux.preset'
         'change-default-console-loglevel.patch'
         'i915-fix-ghost-tv-output.patch'
-        'i915-gpu-finish.patch')
+        'i915-gpu-finish.patch'
+        'ext4-options.patch')
 md5sums=('d747406dcf3344d5d954b9d7e514c11c'
-         'c6a9ca59070b84447b28f0f3c1821675'
-         '21393fd558869aac464767b6c6e64261'
+         '8d19a79e55a5300b0d374d105ee02113'
+         '487c38c45bc6d7c8f6de061d9f29186b'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          '263725f20c0b9eb9c353040792d644e5'
-         '4cd79aa147825837dc8bc9f6b736c0a0')
+         '4cd79aa147825837dc8bc9f6b736c0a0'
+         'c8299cf750a84e12d60b372c8ca7e1e8')
 
 build() {
   cd "${srcdir}/${_srcname}"
@@ -56,6 +58,10 @@ build() {
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
+
+  # fix ext4 module to mount ext3/2 correct
+  # https://bugs.archlinux.org/task/28653
+  patch -Np1 -i "${srcdir}/ext4-options.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
