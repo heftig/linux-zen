@@ -4,10 +4,8 @@
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
-_kernelname=${pkgbase#linux}
-_srcname=zen-stable-95f2426
-pkgver=3.2.10
+_srcname=zen-stable-95c375a
+pkgver=3.3.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -19,18 +17,20 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
+        'fix-acerhdf-1810T-bios.patch'
         'change-default-console-loglevel.patch'
         'i915-fix-ghost-tv-output.patch'
-        'i915-gpu-finish.patch'
         'ext4-options.patch')
-md5sums=('da293b5dfbdd3f0baceede10710b2d6b'
-         '8d19a79e55a5300b0d374d105ee02113'
-         '487c38c45bc6d7c8f6de061d9f29186b'
+md5sums=('7d4f8e1d96796bd8158c2f83b2297459'
+         '00663de4f9069a026baad09f3ae1b9c4'
+         '71769fb78ac8d4d3a6490ebed9729097'
          'eb14dcfd80c00852ef81ded6e826826a'
+         '38c1fd4a1f303f1f6c38e7f082727e2f'
          '9d3c56a4b999c8bfbd4018089a62f662'
          '263725f20c0b9eb9c353040792d644e5'
-         '4cd79aa147825837dc8bc9f6b736c0a0'
-         'c8299cf750a84e12d60b372c8ca7e1e8')
+         'bb7fd1aa23016c8057046b84fd4eb528')
+
+_kernelname=${pkgbase#linux}
 
 build() {
   cd "${srcdir}/${_srcname}"
@@ -41,10 +41,6 @@ build() {
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
 
-  # fix FS#27883
-  # drm/i915: Only clear the GPU domains upon a successful finish
-  patch -Np1 -i "${srcdir}/i915-gpu-finish.patch"
-
   # Some chips detect a ghost TV output
   # mailing list discussion: http://lists.freedesktop.org/archives/intel-gfx/2011-April/010371.html
   # Arch Linux bug report: FS#19234
@@ -53,6 +49,11 @@ build() {
   # then dropped because the reasoning was unclear. However, it is clearly
   # needed.
   patch -Np1 -i "${srcdir}/i915-fix-ghost-tv-output.patch"
+
+  # Patch submitted upstream, waiting for inclusion:
+  # https://lkml.org/lkml/2012/2/19/51
+  # add support for latest bios of Acer 1810T acerhdf module
+  patch -Np1 -i "${srcdir}/fix-acerhdf-1810T-bios.patch"
 
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
@@ -118,10 +119,6 @@ _package() {
   replaces=("kernel26${_kernelname}")
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
   install=linux.install
-
-  # Additional modules we already have in ZEN
-  [ "${pkgbase}" = "linux-zen" ] && \
-    provides+=('vhba-module' 'tp_smapi' 'aufs3')
 
   cd "${srcdir}/${_srcname}"
 
@@ -189,7 +186,7 @@ _package-headers() {
   mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/include"
 
   for i in acpi asm-generic config crypto drm generated linux math-emu \
-    media net pcmcia scsi sound trace video xen; do
+    media mtd net pcmcia scsi sound trace video xen; do
     cp -a include/${i} "${pkgdir}/usr/src/linux-${_kernver}/include/"
   done
 
@@ -295,7 +292,7 @@ _package-headers() {
   done
 
   # remove unneeded architectures
-  rm -rf "${pkgdir}"/usr/src/linux-${_kernver}/arch/{alpha,arm,arm26,avr32,blackfin,cris,frv,h8300,ia64,m32r,m68k,m68knommu,mips,microblaze,mn10300,parisc,powerpc,ppc,s390,sh,sh64,sparc,sparc64,um,v850,xtensa}
+  rm -rf "${pkgdir}"/usr/src/linux-${_kernver}/arch/{alpha,arm,arm26,avr32,blackfin,c6x,cris,frv,h8300,hexagon,ia64,m32r,m68k,m68knommu,mips,microblaze,mn10300,openrisc,parisc,powerpc,ppc,s390,score,sh,sh64,sparc,sparc64,tile,unicore32,um,v850,xtensa}
 }
 
 _package-docs() {
@@ -315,6 +312,7 @@ _package-docs() {
   rm -f "${pkgdir}/usr/src/linux-${_kernver}/Documentation/DocBook/Makefile"
 }
 
+pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 for _p in ${pkgname[@]}; do
   eval "package_${_p}() {
     _package${_p#${pkgbase}}
