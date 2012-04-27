@@ -4,8 +4,8 @@
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-7d6001f
-pkgver=3.3.3
+_srcname=zen-stable-47ffce0
+pkgver=3.3.4
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -21,9 +21,9 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'change-default-console-loglevel.patch'
         'i915-fix-ghost-tv-output.patch'
         'ext4-options.patch')
-md5sums=('21b493c81360d7cbf94a1d92c164de2b'
-         '00663de4f9069a026baad09f3ae1b9c4'
-         '71769fb78ac8d4d3a6490ebed9729097'
+md5sums=('b7867bef41169738337ad1e9bef35ddd'
+         '33e1debb3c1bc3a5cfd8b49265a00d3f'
+         'f1bea0b3884fff4868b535c610d0316a'
          'eb14dcfd80c00852ef81ded6e826826a'
          '38c1fd4a1f303f1f6c38e7f082727e2f'
          '9d3c56a4b999c8bfbd4018089a62f662'
