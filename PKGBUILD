@@ -6,7 +6,7 @@ pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-stable-47ffce0
 pkgver=3.3.4
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -22,8 +22,8 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'i915-fix-ghost-tv-output.patch'
         'ext4-options.patch')
 md5sums=('b7867bef41169738337ad1e9bef35ddd'
-         '33e1debb3c1bc3a5cfd8b49265a00d3f'
-         'f1bea0b3884fff4868b535c610d0316a'
+         'e00044aa2a64f12b893ad7fbe03f224d'
+         '683ab386471cebd78b4c384f2aede8d7'
          'eb14dcfd80c00852ef81ded6e826826a'
          '38c1fd4a1f303f1f6c38e7f082727e2f'
          '9d3c56a4b999c8bfbd4018089a62f662'
@@ -112,7 +112,7 @@ build() {
 _package() {
   pkgdesc="The ${pkgbase} kernel and modules"
   [ "${pkgbase}" = "linux" ] && groups=('base')
-  depends=('coreutils' 'linux-firmware' 'module-init-tools>=3.16' 'mkinitcpio>=0.7')
+  depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=0.7')
   optdepends=('crda: to set the correct wireless channels of your country')
   provides=("kernel26${_kernelname}=${pkgver}")
   conflicts=("kernel26${_kernelname}")
