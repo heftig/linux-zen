@@ -4,8 +4,8 @@
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-8fdf025
-pkgver=3.3.6
+_srcname=zen-stable-28db902
+pkgver=3.4.2
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -19,16 +19,14 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'linux.preset'
         'fix-acerhdf-1810T-bios.patch'
         'change-default-console-loglevel.patch'
-        'i915-fix-ghost-tv-output.patch'
-        'ext4-options.patch')
-md5sums=('49e3d9d341400b7ffd38eee1277203ad'
-         'e00044aa2a64f12b893ad7fbe03f224d'
-         '683ab386471cebd78b4c384f2aede8d7'
+        'i915-fix-ghost-tv-output.patch')
+md5sums=('26d395dc57fb224e007e19bb1b3b760f'
+         '0c4fa7f84ae73ed35f3cc2e6c2ecbe67'
+         '7e4968c7848d848e62b05b06282d397f'
          'eb14dcfd80c00852ef81ded6e826826a'
          '38c1fd4a1f303f1f6c38e7f082727e2f'
          '9d3c56a4b999c8bfbd4018089a62f662'
-         '263725f20c0b9eb9c353040792d644e5'
-         'bb7fd1aa23016c8057046b84fd4eb528')
+         '263725f20c0b9eb9c353040792d644e5')
 
 _kernelname=${pkgbase#linux}
 
@@ -59,10 +57,6 @@ build() {
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
-
-  # fix ext4 module to mount ext3/2 correct
-  # https://bugs.archlinux.org/task/28653
-  patch -Np1 -i "${srcdir}/ext4-options.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
