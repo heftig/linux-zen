@@ -2,10 +2,11 @@
 # Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 # Contributor: Tobias Powalowski <tpowa@archlinux.org>
 # Contributor: Thomas Baechler <thomas@archlinux.org>
+
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-b7ceacd
-pkgver=3.4.3
+_srcname=zen-stable-1c9a941
+pkgver=3.4.4
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -19,16 +20,14 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'linux.preset'
         'fix-acerhdf-1810T-bios.patch'
         'change-default-console-loglevel.patch'
-        'i915-fix-ghost-tv-output.patch'
-        '3.4.2-rpc_pipefs.patch')
-md5sums=('cec59152285c0b34603360766457a58d'
+        'i915-fix-ghost-tv-output.patch')
+md5sums=('a12e14b14037edc0179b9551e9cfab76'
          '0c4fa7f84ae73ed35f3cc2e6c2ecbe67'
          '7e4968c7848d848e62b05b06282d397f'
          'eb14dcfd80c00852ef81ded6e826826a'
          '38c1fd4a1f303f1f6c38e7f082727e2f'
          '9d3c56a4b999c8bfbd4018089a62f662'
-         '263725f20c0b9eb9c353040792d644e5'
-         '5a7baeab35f968bf9a6ab115d14586c7')
+         '263725f20c0b9eb9c353040792d644e5')
 
 _kernelname=${pkgbase#linux}
 
@@ -38,8 +37,6 @@ build() {
   # add upstream patch
   # patch -p1 -i "${srcdir}/patch-${pkgver}"
 
-  # fix nfs4 regression
-  patch -Np1 -i "${srcdir}/3.4.2-rpc_pipefs.patch"
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
 
