@@ -5,9 +5,9 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-d972ad2
-pkgver=3.4.4
-pkgrel=3
+_srcname=zen-stable-764386b
+pkgver=3.4.5
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -21,7 +21,7 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'fix-acerhdf-1810T-bios.patch'
         'change-default-console-loglevel.patch'
         'i915-fix-ghost-tv-output.patch')
-md5sums=('2236dc1227b5a9796ec68d3a5ffcd79c'
+md5sums=('f289ec71deaa4784d548fceca7211913'
          '0c4fa7f84ae73ed35f3cc2e6c2ecbe67'
          '7e4968c7848d848e62b05b06282d397f'
          'eb14dcfd80c00852ef81ded6e826826a'
