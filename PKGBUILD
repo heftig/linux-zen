@@ -5,8 +5,8 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-f5100d9
-pkgver=3.4.6
+_srcname=zen-stable-6046a5d
+pkgver=3.5.0
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -21,9 +21,9 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'fix-acerhdf-1810T-bios.patch'
         'change-default-console-loglevel.patch'
         'i915-fix-ghost-tv-output.patch')
-md5sums=('49acc866c6e686b19f3197b504e6a742'
-         '0c4fa7f84ae73ed35f3cc2e6c2ecbe67'
-         '7e4968c7848d848e62b05b06282d397f'
+md5sums=('446e085570b31548767ec403f361658d'
+         'dc576ced5799d2c3d468c518b7baf4ff'
+         '870d1f3be2e899db2bebf5541cd52fc0'
          'eb14dcfd80c00852ef81ded6e826826a'
          '38c1fd4a1f303f1f6c38e7f082727e2f'
          '9d3c56a4b999c8bfbd4018089a62f662'
@@ -221,7 +221,7 @@ _package-headers() {
 
   cp drivers/media/video/*.h  "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/"
 
-  for i in bt8xx cpia2 cx25840 cx88 em28xx et61x251 pwc saa7134 sn9c102; do
+  for i in bt8xx cpia2 cx25840 cx88 em28xx pwc saa7134 sn9c102; do
     mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/${i}"
     cp -a drivers/media/video/${i}/*.h "${pkgdir}/usr/src/linux-${_kernver}/drivers/media/video/${i}"
   done
