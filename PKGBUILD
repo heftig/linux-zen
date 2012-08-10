@@ -5,8 +5,8 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-6046a5d
-pkgver=3.5.0
+_srcname=zen-stable-68b4b1e
+pkgver=3.5.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -18,16 +18,14 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'fix-acerhdf-1810T-bios.patch'
         'change-default-console-loglevel.patch'
-        'i915-fix-ghost-tv-output.patch')
-md5sums=('446e085570b31548767ec403f361658d'
-         'dc576ced5799d2c3d468c518b7baf4ff'
-         '870d1f3be2e899db2bebf5541cd52fc0'
+        'avmfritz-only-few-bytes-are-transfered-on-a-conn.patch')
+md5sums=('fb8f0bb32328fd0a994e181bbd695d14'
+         '534664d4d25a5418aaf0fcfd0dbcb986'
+         '9c977351482f64be606a1b8e3903dc31'
          'eb14dcfd80c00852ef81ded6e826826a'
-         '38c1fd4a1f303f1f6c38e7f082727e2f'
          '9d3c56a4b999c8bfbd4018089a62f662'
-         '263725f20c0b9eb9c353040792d644e5')
+         '2afcc001cc178be72e3a19d95f4bd5eb')
 
 _kernelname=${pkgbase#linux}
 
@@ -40,24 +38,14 @@ build() {
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
 
-  # Some chips detect a ghost TV output
-  # mailing list discussion: http://lists.freedesktop.org/archives/intel-gfx/2011-April/010371.html
-  # Arch Linux bug report: FS#19234
-  #
-  # It is unclear why this patch wasn't merged upstream, it was accepted,
-  # then dropped because the reasoning was unclear. However, it is clearly
-  # needed.
-  patch -Np1 -i "${srcdir}/i915-fix-ghost-tv-output.patch"
-
-  # Patch submitted upstream, waiting for inclusion:
-  # https://lkml.org/lkml/2012/2/19/51
-  # add support for latest bios of Acer 1810T acerhdf module
-  patch -Np1 -i "${srcdir}/fix-acerhdf-1810T-bios.patch"
-
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
+
+  # fix avmfritz capi20 functionallity
+  # https://bugzilla.kernel.org/show_bug.cgi?id=45271
+  patch -Np1 -i "${srcdir}/avmfritz-only-few-bytes-are-transfered-on-a-conn.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
