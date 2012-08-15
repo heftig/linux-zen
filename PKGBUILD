@@ -5,8 +5,8 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-68b4b1e
-pkgver=3.5.1
+_srcname=zen-stable-1995b50
+pkgver=3.5.2
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -18,14 +18,12 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'change-default-console-loglevel.patch'
-        'avmfritz-only-few-bytes-are-transfered-on-a-conn.patch')
-md5sums=('fb8f0bb32328fd0a994e181bbd695d14'
+        'change-default-console-loglevel.patch')
+md5sums=('1434be2b2722ed03b43cbbbf6129ea70'
          '534664d4d25a5418aaf0fcfd0dbcb986'
          '9c977351482f64be606a1b8e3903dc31'
          'eb14dcfd80c00852ef81ded6e826826a'
-         '9d3c56a4b999c8bfbd4018089a62f662'
-         '2afcc001cc178be72e3a19d95f4bd5eb')
+         '9d3c56a4b999c8bfbd4018089a62f662')
 
 _kernelname=${pkgbase#linux}
 
@@ -42,10 +40,6 @@ build() {
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
-
-  # fix avmfritz capi20 functionallity
-  # https://bugzilla.kernel.org/show_bug.cgi?id=45271
-  patch -Np1 -i "${srcdir}/avmfritz-only-few-bytes-are-transfered-on-a-conn.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
@@ -74,7 +68,7 @@ build() {
   #make xconfig # X-based configuration
   #make oldconfig # using old config from previous kernel version
   # ... or manually edit .config
-  
+
   # rewrite configuration
   yes "" | make config >/dev/null
 
