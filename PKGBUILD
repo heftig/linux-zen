@@ -5,9 +5,9 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-584d34f
+_srcname=zen-stable-819b51b
 pkgver=3.5.3
-pkgrel=1
+pkgrel=1.1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -22,9 +22,9 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'alsa-powersave-3.5.x.patch'
         'watchdog-3.5.x.patch'
         'i915-i2c-crash-3.5.x.patch')
-md5sums=('f997de2ba9ad4465030a631a18f7730b'
-         '40e46d75dd371ff4889a7f54b3c3561d'
-         'f8358b5efd1c54dccf72f903abe56ee4'
+md5sums=('5f54439d1030de81bbe07566e9d3feb3'
+         '6a656e593c18d4b92acfeae2063988fc'
+         '65bef52d5033fb4a561624f6049c2b05'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          'c1d58e712112cf8f95e7831012a1e67a'
