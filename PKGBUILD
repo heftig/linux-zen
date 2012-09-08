@@ -5,9 +5,9 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-819b51b
+_srcname=zen-stable-00d51df
 pkgver=3.5.3
-pkgrel=1.1
+pkgrel=1.2
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -22,9 +22,9 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         'alsa-powersave-3.5.x.patch'
         'watchdog-3.5.x.patch'
         'i915-i2c-crash-3.5.x.patch')
-md5sums=('5f54439d1030de81bbe07566e9d3feb3'
-         '6a656e593c18d4b92acfeae2063988fc'
-         '65bef52d5033fb4a561624f6049c2b05'
+md5sums=('346423b6a1a6c8344eb0d8a626c06d01'
+         'fb82a4b8ef4afe89933e8065f43780e4'
+         'c375e6237b76f64757e842212b3c1bcb'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          'c1d58e712112cf8f95e7831012a1e67a'
@@ -161,11 +161,11 @@ _package() {
   mkdir -p "${pkgdir}/lib/modules/extramodules-${_basekernel}${_kernelname:--ARCH}"
   echo "${_kernver}" > "${pkgdir}/lib/modules/extramodules-${_basekernel}${_kernelname:--ARCH}/version"
 
-  # move module tree /lib -> /usr/lib
-  mv "$pkgdir/lib" "$pkgdir/usr"
-
   # Now we call depmod...
   depmod -b "$pkgdir" -F System.map "$_kernver"
+
+  # move module tree /lib -> /usr/lib
+  mv "$pkgdir/lib" "$pkgdir/usr"
 }
 
 _package-headers() {
