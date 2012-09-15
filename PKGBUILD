@@ -5,9 +5,9 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-00d51df
-pkgver=3.5.3
-pkgrel=1.2
+_srcname=zen-stable-d65cf4a
+pkgver=3.5.4
+pkgrel=0
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -19,15 +19,13 @@ source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
-        'alsa-powersave-3.5.x.patch'
         'watchdog-3.5.x.patch'
         'i915-i2c-crash-3.5.x.patch')
-md5sums=('346423b6a1a6c8344eb0d8a626c06d01'
-         'fb82a4b8ef4afe89933e8065f43780e4'
-         'c375e6237b76f64757e842212b3c1bcb'
+md5sums=('3694ab909d0a1431e77cf3813aa890ea'
+         'd63c3304dc5a1f98f7b36ca6655e96af'
+         'cbe8ae3bd1876b0e5b8274035960b766'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
-         'c1d58e712112cf8f95e7831012a1e67a'
          'ae13ed1e92bba07e9b17cf5c8d89683c'
          'ff4a203dd52e4dfb5d60948bb667d06d')
 
@@ -41,10 +39,6 @@ build() {
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
-
-  # fix alsa powersave bug, probably fixed in 3.5.4
-  # https://bugs.archlinux.org/task/31255
-  patch -Np1 -i  "${srcdir}/alsa-powersave-3.5.x.patch"
 
   # fix broken watchdog
   # https://bugzilla.kernel.org/show_bug.cgi?id=44991
