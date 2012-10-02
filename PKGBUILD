@@ -5,29 +5,25 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=zen-stable-d65cf4a
-pkgver=3.5.4
-pkgrel=0
+_srcname=damentz-zen-kernel-2c51aab
+pkgver=3.6
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl')
 options=('!strip')
-source=(http://git.zen-kernel.org/zen-stable/snapshot/${_srcname}.tar.bz2
+source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_srcname##*-}"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'change-default-console-loglevel.patch'
-        'watchdog-3.5.x.patch'
-        'i915-i2c-crash-3.5.x.patch')
-md5sums=('3694ab909d0a1431e77cf3813aa890ea'
-         'd63c3304dc5a1f98f7b36ca6655e96af'
-         'cbe8ae3bd1876b0e5b8274035960b766'
+        'change-default-console-loglevel.patch')
+md5sums=('1f26c761062b0bb18f4122b01fb3d3f5'
+         'd4223b94d1f592a4685fe1aa311881b9'
+         'f12f27240b44e9bf391e32b63779fb2b'
          'eb14dcfd80c00852ef81ded6e826826a'
-         '9d3c56a4b999c8bfbd4018089a62f662'
-         'ae13ed1e92bba07e9b17cf5c8d89683c'
-         'ff4a203dd52e4dfb5d60948bb667d06d')
+         '9d3c56a4b999c8bfbd4018089a62f662')
 
 _kernelname=${pkgbase#linux}
 
@@ -39,14 +35,6 @@ build() {
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
-
-  # fix broken watchdog
-  # https://bugzilla.kernel.org/show_bug.cgi?id=44991
-  patch -Np1 -i "${srcdir}/watchdog-3.5.x.patch"
-
-  # fix i915 i2c crash
-  # https://bugzilla.kernel.org/show_bug.cgi?id=46381
-  patch -Np1 -i "${srcdir}/i915-i2c-crash-3.5.x.patch"
 
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
