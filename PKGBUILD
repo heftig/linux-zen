@@ -5,8 +5,8 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-48f084b
-pkgver=3.6.2
+_srcname=damentz-zen-kernel-3310970
+pkgver=3.6.3
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -18,12 +18,16 @@ source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_sr
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'change-default-console-loglevel.patch')
-md5sums=('63e9d3f8254c81b8c0d643360d840102'
-         'f813eff15a12459292fa945da3180487'
-         '63601e846d4783fedf055009af6bb6a4'
+        'change-default-console-loglevel.patch'
+        'module-symbol-waiting-3.6.patch'
+        'module-init-wait-3.6.patch')
+md5sums=('a62de789791481e1f452ca9d83eb9d85'
+         'aad78cc3189a651730f1c70559e92bb5'
+         '024a9712650d6d6b40ea28b8e6d7d4b3'
          'eb14dcfd80c00852ef81ded6e826826a'
-         '9d3c56a4b999c8bfbd4018089a62f662')
+         '9d3c56a4b999c8bfbd4018089a62f662'
+         '670931649c60fcb3ef2e0119ed532bd4'
+         '8a71abc4224f575008f974a099b5cf6f')
 
 _kernelname=${pkgbase#linux}
 
@@ -40,6 +44,11 @@ build() {
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
+
+  # fix module initialisation
+  # https://bugs.archlinux.org/task/32122
+  patch -Np1 -i "${srcdir}/module-symbol-waiting-3.6.patch"
+  patch -Np1 -i "${srcdir}/module-init-wait-3.6.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
