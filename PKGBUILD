@@ -5,9 +5,9 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-10d5abd
+_srcname=damentz-zen-kernel-8bbead6
 pkgver=3.6.6
-pkgrel=1
+pkgrel=1.1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -21,7 +21,7 @@ source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_sr
         'change-default-console-loglevel.patch'
         'module-symbol-waiting-3.6.patch'
         'module-init-wait-3.6.patch')
-md5sums=('5baf0637d45de753eeee25c8922eccfd'
+md5sums=('08addd213a4f1678a5b5650d4efa2ba7'
          'aad78cc3189a651730f1c70559e92bb5'
          '024a9712650d6d6b40ea28b8e6d7d4b3'
          'eb14dcfd80c00852ef81ded6e826826a'
