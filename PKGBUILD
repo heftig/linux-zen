@@ -5,8 +5,8 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-43263b0
-pkgver=3.6.9
+_srcname=damentz-zen-kernel-d708117
+pkgver=3.6.10
 pkgrel=0
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
@@ -20,14 +20,16 @@ source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_sr
         'linux.preset'
         'change-default-console-loglevel.patch'
         'module-symbol-waiting-3.6.patch'
-        'module-init-wait-3.6.patch')
-md5sums=('2262cb05b9319193f0e3d12d25e28d6e'
+        'module-init-wait-3.6.patch'
+        'fat-3.6.x.patch')
+md5sums=('cded403de1a9f84bd4dcf65e58457096'
          'aad78cc3189a651730f1c70559e92bb5'
          '024a9712650d6d6b40ea28b8e6d7d4b3'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          '670931649c60fcb3ef2e0119ed532bd4'
-         '8a71abc4224f575008f974a099b5cf6f')
+         '8a71abc4224f575008f974a099b5cf6f'
+         '88d501404f172dac6fcb248978251560')
 
 _kernelname=${pkgbase#linux}
 
@@ -49,6 +51,10 @@ build() {
   # https://bugs.archlinux.org/task/32122
   patch -Np1 -i "${srcdir}/module-symbol-waiting-3.6.patch"
   patch -Np1 -i "${srcdir}/module-init-wait-3.6.patch"
+
+  # fix cosmetic fat issue
+  # https://bugs.archlinux.org/task/32916
+  patch -Np1 -i "${srcdir}/fat-3.6.x.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
