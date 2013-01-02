@@ -5,9 +5,9 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-ef922b6
+_srcname=damentz-zen-kernel-813bf93
 pkgver=3.7.1
-pkgrel=2.1
+pkgrel=2.2
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -19,15 +19,13 @@ source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_sr
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
-        'fat-3.6.x.patch'
-        'fix-watchdog-3.7.patch')
-md5sums=('0853b0637e08fca69082eefcf0871a1b'
-         'b4230d83990f4122c531fa03d36a885f'
-         '181f415dd2d61bebda53b730b06663ae'
+        'fat-3.6.x.patch')
+md5sums=('b0bf6c96cf1bb16fe2bcb73817006744'
+         'b278e008526889e3402d499ae13656df'
+         'a57e77ee229df04debb7aafd8fac6d75'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
-         '88d501404f172dac6fcb248978251560'
-         '3485d6c7ae3af35d16e09d6d9a7ed32a')
+         '88d501404f172dac6fcb248978251560')
 
 _kernelname=${pkgbase#linux}
 
@@ -48,10 +46,6 @@ build() {
   # fix cosmetic fat issue
   # https://bugs.archlinux.org/task/32916
   patch -Np1 -i "${srcdir}/fat-3.6.x.patch"
-
-  # fix watchdog enable/disable regression
-  # https://bugs.archlinux.org/task/33095
-  patch -Np1 -i "${srcdir}/fix-watchdog-3.7.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
