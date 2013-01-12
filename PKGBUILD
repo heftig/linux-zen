@@ -5,9 +5,9 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-5a954c9
+_srcname=damentz-zen-kernel-e9735ad
 pkgver=3.7.2
-pkgrel=0
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
@@ -20,9 +20,9 @@ source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_sr
         'linux.preset'
         'change-default-console-loglevel.patch'
         'fat-3.6.x.patch')
-md5sums=('d8c1d1d75d56e41f27d1ea6f9b2b0c81'
-         'b278e008526889e3402d499ae13656df'
-         'a57e77ee229df04debb7aafd8fac6d75'
+md5sums=('9f4a6669fc8446ea57ff5d83964eee1a'
+         '8166fa8b3c5d097568d18699016ff123'
+         '67b4070ea4f209f80964b751d60be9d6'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          '88d501404f172dac6fcb248978251560')
@@ -31,9 +31,6 @@ _kernelname=${pkgbase#linux}
 
 build() {
   cd "${srcdir}/${_srcname}"
-
-  # add upstream patch
-  #patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
