@@ -5,24 +5,24 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-7787445
+_srcname=damentz-zen-kernel-3637da6
 pkgver=3.7.4
-pkgrel=0
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.zen-kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl')
 options=('!strip')
-source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_srcname##*-}d"
+source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_srcname##*-}"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
         'fat-3.6.x.patch')
-md5sums=('0ee1d75f0ff6a64ded86d9953a1770e1'
-         '8166fa8b3c5d097568d18699016ff123'
-         '67b4070ea4f209f80964b751d60be9d6'
+md5sums=('fc547e8fbb83fb980e2965b1ace3ba2c'
+         'd68b4bf083d03b1b4b995ef76037cefe'
+         '6a8420d654f3934cc4224f77f6341bd1'
          'eb14dcfd80c00852ef81ded6e826826a'
          '9d3c56a4b999c8bfbd4018089a62f662'
          '88d501404f172dac6fcb248978251560')
