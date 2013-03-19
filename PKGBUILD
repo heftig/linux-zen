@@ -5,27 +5,29 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-d01630e
-pkgver=3.7.9
-pkgrel=1
+_srcname=damentz-zen-kernel-6ed2d62
+pkgver=3.8.3
+pkgrel=2
 arch=('i686' 'x86_64')
-url="http://www.zen-kernel.org/"
+url="https://github.com/damentz/zen-kernel"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl')
 options=('!strip')
-source=("${_srcname}.tar.gz::https://github.com/damentz/zen-kernel/tarball/${_srcname##*-}"
+source=("${_srcname}.tar.gz::${url}/tarball/${_srcname##*-}"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
-        'fat-3.6.x.patch')
-md5sums=('0dc1cfc0d6afd485f73cc6f380ab8253'
-         '05fb59e9bf5158271a8389ac0b05c5ad'
-         '4d4baf5683623bc7b2bac56de2ecd7f3'
+        'drm-i915-enable-irqs-earlier-when-resuming.patch'
+        'drm-i915-reorder-setup-sequence-to-have-irqs-for-output-setup.patch')
+md5sums=('7f72b7b77fc6095941051c880ad89acf'
+         'e13ae50020661308c237e21991e8c4cc'
+         '88d66fab34ef7793d278ddcb24c0a025'
          'eb14dcfd80c00852ef81ded6e826826a'
-         '9d3c56a4b999c8bfbd4018089a62f662'
-         '88d501404f172dac6fcb248978251560')
+         'f3def2cefdcbb954c21d8505d23cc83c'
+         '40e7b328977ad787a0b5584f193d63fe'
+         '8b9159931fab0c191a86dbd5a46fa328')
 
 _kernelname=${pkgbase#linux}
 
@@ -40,9 +42,10 @@ build() {
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
 
-  # fix cosmetic fat issue
-  # https://bugs.archlinux.org/task/32916
-  patch -Np1 -i "${srcdir}/fat-3.6.x.patch"
+  # revert 2 patches which breaks displays
+  # FS 34327
+  patch -Rp1 -i "${srcdir}/drm-i915-enable-irqs-earlier-when-resuming.patch"
+  patch -Rp1 -i "${srcdir}/drm-i915-reorder-setup-sequence-to-have-irqs-for-output-setup.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
@@ -174,7 +177,7 @@ _package-headers() {
 
   mkdir -p "${pkgdir}/usr/src/linux-${_kernver}/include"
 
-  for i in acpi asm-generic config crypto drm generated linux math-emu \
+  for i in acpi asm-generic config crypto drm generated keys linux math-emu \
     media net pcmcia scsi sound trace uapi video xen; do
     cp -a include/${i} "${pkgdir}/usr/src/linux-${_kernver}/include/"
   done
