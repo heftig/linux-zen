@@ -5,13 +5,13 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-38c3f71
+_srcname=damentz-zen-kernel-f681645
 pkgver=3.8.4
-pkgrel=1
+pkgrel=1.1
 arch=('i686' 'x86_64')
 url="https://github.com/damentz/zen-kernel"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl')
+makedepends=('xmlto' 'docbook-xsl' 'lzop')
 options=('!strip')
 source=("${_srcname}.tar.gz::${url}/tarball/${_srcname##*-}"
         # the main kernel config files
@@ -19,9 +19,9 @@ source=("${_srcname}.tar.gz::${url}/tarball/${_srcname##*-}"
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch')
-md5sums=('e96b98a1dd71044c5883d6fa81bf2a82'
-         'a13a8d6e7824edc67baeafb1c80907e3'
-         '5e4c3782ecb0e05a2829e69837069b9f'
+md5sums=('8ddec4f541a5881284486f85d89a2aea'
+         '92c7bd653aa6cbc111506cb4f295a90c'
+         '65803ae69281bb78de2aae27c908758e'
          'eb14dcfd80c00852ef81ded6e826826a'
          'f3def2cefdcbb954c21d8505d23cc83c')
 
