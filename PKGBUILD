@@ -5,13 +5,13 @@
 
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
-_srcname=damentz-zen-kernel-df0a3c4
-pkgver=3.8.6
-pkgrel=0
+_srcname=damentz-zen-kernel-a9966e3
+pkgver=3.8.7
+pkgrel=1
 arch=('i686' 'x86_64')
 url="https://github.com/damentz/zen-kernel"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'lzop')
+makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'lzop')
 options=('!strip')
 source=("${_srcname}.tar.gz::${url}/tarball/${_srcname##*-}"
         # the main kernel config files
@@ -19,7 +19,7 @@ source=("${_srcname}.tar.gz::${url}/tarball/${_srcname##*-}"
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch')
-md5sums=('e3031fc60f0c338a3c23bfa6e819efa1'
+md5sums=('74f15767b72e5e13af850db65115ddb5'
          '54eedde94e23b627531d8ac567be4b17'
          'e6999dd02028f8ffd8e62ee305bb05ff'
          'eb14dcfd80c00852ef81ded6e826826a'
@@ -27,7 +27,7 @@ md5sums=('e3031fc60f0c338a3c23bfa6e819efa1'
 
 _kernelname=${pkgbase#linux}
 
-build() {
+prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add latest fixes from stable queue, if needed
@@ -54,6 +54,10 @@ build() {
 
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
+}
+
+build() {
+  cd "${srcdir}/${_srcname}"
 
   # get kernel version
   make prepare
