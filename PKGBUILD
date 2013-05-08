@@ -6,8 +6,8 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.9.0
-pkgrel=2
+pkgver=3.9.1
+pkgrel=0
 arch=('i686' 'x86_64')
 url="https://github.com/damentz/zen-kernel"
 license=('GPL2')
@@ -18,14 +18,12 @@ source=("git://github.com/damentz/${_srcname}.git#branch=3.9/master"
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'change-default-console-loglevel.patch'
-        'alsa-firmware-loading-3.8.8.patch')
+        'change-default-console-loglevel.patch')
 md5sums=('SKIP'
          'ad69494b2d074006175e9db2277ba167'
          'fe4a9a8bf887fc8b58104d6363b23d41'
          'eb14dcfd80c00852ef81ded6e826826a'
-         'f3def2cefdcbb954c21d8505d23cc83c'
-         'e2ac681ffa439e969b4c3b4616852454')
+         'f3def2cefdcbb954c21d8505d23cc83c')
 
 _kernelname=${pkgbase#linux}
 
@@ -41,9 +39,6 @@ prepare() {
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
-
-  # fix alsa firmware loading #34865
-  patch -Np1 -i "${srcdir}/alsa-firmware-loading-3.8.8.patch"
 
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
