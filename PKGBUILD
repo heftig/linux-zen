@@ -6,7 +6,7 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.9.8
+pkgver=3.9.9
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://github.com/damentz/zen-kernel"
