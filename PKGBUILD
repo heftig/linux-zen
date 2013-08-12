@@ -6,7 +6,7 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.10.5
+pkgver=3.10.6
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://github.com/damentz/zen-kernel"
@@ -18,12 +18,14 @@ source=("git+https://github.com/damentz/${_srcname}.git#branch=3.10/master"
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'change-default-console-loglevel.patch')
+        'change-default-console-loglevel.patch'
+        'criu-no-expert.patch')
 md5sums=('SKIP'
-         '2ad52a3aa2719a4a25a457d88704a553'
-         '246bf580255ff2de392e2597ff50dc97'
+         '786efa8187e65263a4032c9babcc204b'
+         '5565ae6555bafed2c9f24372e5bba4ac'
          'eb14dcfd80c00852ef81ded6e826826a'
-         'f3def2cefdcbb954c21d8505d23cc83c')
+         'f3def2cefdcbb954c21d8505d23cc83c'
+         'd50c1ac47394e9aec637002ef3392bd1')
 
 _kernelname=${pkgbase#linux}
 
@@ -45,6 +47,10 @@ prepare() {
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
 
+  # allow criu without expert option set
+  # patch from fedora
+  patch -Np1 -i "${srcdir}/criu-no-expert.patch"
+ 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
   else
