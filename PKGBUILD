@@ -20,8 +20,8 @@ source=("git+https://github.com/damentz/${_srcname}.git#branch=3.10/master"
         'linux.preset'
         'change-default-console-loglevel.patch')
 md5sums=('SKIP'
-         '786efa8187e65263a4032c9babcc204b'
-         '5565ae6555bafed2c9f24372e5bba4ac'
+         'afb42fa8a3d0f95ecfb1b6b5548106f7'
+         'f79c53811bced6cde6956b6739b161ae'
          'eb14dcfd80c00852ef81ded6e826826a'
          'f3def2cefdcbb954c21d8505d23cc83c')
 
