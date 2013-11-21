@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 3.12.0-1 Kernel Configuration
+# Linux/x86 3.12.1-1 Kernel Configuration
 #
 CONFIG_64BIT=y
 CONFIG_X86_64=y
@@ -49,6 +49,7 @@ CONFIG_BUILDTIME_EXTABLE_SORT=y
 # General setup
 #
 CONFIG_ZEN_INTERACTIVE=y
+# CONFIG_SCHED_BFS is not set
 CONFIG_INIT_ENV_ARG_LIMIT=32
 CONFIG_CROSS_COMPILE=""
 # CONFIG_COMPILE_TEST is not set

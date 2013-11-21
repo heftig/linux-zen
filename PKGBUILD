@@ -6,7 +6,7 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.12.0
+pkgver=3.12.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://github.com/damentz/zen-kernel"
@@ -20,8 +20,8 @@ source=("git+https://github.com/damentz/${_srcname}.git#branch=3.12/master"
         'linux.preset'
         'change-default-console-loglevel.patch')
 md5sums=('SKIP'
-         '2900f5d4b7985b030f95a26e74663d6d'
-         '0b6f4c1bc4d406f7a9649853b5e40f25'
+         '43b6c15f3b12bda47942b558306247fe'
+         '7c6cc9cdf91cfe1503183011d443f454'
          'eb14dcfd80c00852ef81ded6e826826a'
          '98beb36f9b8cf16e58de2483ea9985e3')
 
