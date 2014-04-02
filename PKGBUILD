@@ -6,24 +6,25 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.13.7
+pkgver=3.14.0
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://github.com/damentz/zen-kernel"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'lzop' 'git')
 options=('!strip')
-source=("git+https://github.com/damentz/${_srcname}.git#branch=3.13/master"
+source=("git+https://github.com/damentz/${_srcname}.git#branch=3.14/master"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'change-default-console-loglevel.patch')
-md5sums=('SKIP'
-         '6c1480c60da07e72a390c4d6f759b5a5'
-         '6a3f7cfb77fa8d2035874f97ee4b8ba4'
-         'eb14dcfd80c00852ef81ded6e826826a'
-         '98beb36f9b8cf16e58de2483ea9985e3')
+        'change-default-console-loglevel.patch'
+        )
+sha256sums=('SKIP'
+            '05b7b18160280af5487e9fac3748cbb72625f9e332415e007604727b2739e692'
+            '9848aead971c1fcc896557092c33ef4c3e32af7c9aac802ace7919d5d8e135f5'
+            'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
+            'faced4eb4c47c4eb1a9ee8a5bf8a7c4b49d6b4d78efbe426e410730e6267d182')
 
 _kernelname=${pkgbase#linux}
 
@@ -192,25 +193,6 @@ _package-headers() {
 
   cp arch/${KARCH}/kernel/asm-offsets.s "${pkgdir}/usr/lib/modules/${_kernver}/build/arch/${KARCH}/kernel/"
 
-  # add headers for lirc package
-  # pci
-  for i in bt8xx cx88 saa7134; do
-    mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/pci/${i}"
-    cp -a drivers/media/pci/${i}/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/pci/${i}"
-  done
-  # usb
-  for i in cpia2 em28xx pwc sn9c102; do
-    mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/usb/${i}"
-    cp -a drivers/media/usb/${i}/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/usb/${i}"
-  done
-  # i2c
-  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c"
-  cp drivers/media/i2c/*.h  "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/"
-  for i in cx25840; do
-    mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/${i}"
-    cp -a drivers/media/i2c/${i}/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/${i}"
-  done
-
   # add docbook makefile
   install -D -m644 Documentation/DocBook/Makefile \
     "${pkgdir}/usr/lib/modules/${_kernver}/build/Documentation/DocBook/Makefile"
@@ -242,6 +224,7 @@ _package-headers() {
   # http://bugs.archlinux.org/task/13146
   mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-frontends/"
   cp drivers/media/dvb-frontends/lgdt330x.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-frontends/"
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/"
   cp drivers/media/i2c/msp3400-driver.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/"
 
   # add dvb headers
