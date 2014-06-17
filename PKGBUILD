@@ -6,14 +6,14 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.14.6
+pkgver=3.15.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://zen-kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'lzop' 'git')
 options=('!strip')
-source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.14/master"
+source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.15/master"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
@@ -21,8 +21,8 @@ source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.14/master"
         'change-default-console-loglevel.patch'
         )
 sha256sums=('SKIP'
-            'd3a985e387d4d660e93d4a810c69f8b8740ecae53d42cafc0a71081830b2ef12'
-            '39f5fbb4e263f7afbc4886616f9ac3988977630b466d6bb94742913a2a299d32'
+            'c82ded9479b0d599a412321c60f04facc1815b716938119451a747835d03951d'
+            '121c7f6b112f4eac45c5eb55db28ccf07915f39d2f24d5edb4380977ac1021b6'
             'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
             'faced4eb4c47c4eb1a9ee8a5bf8a7c4b49d6b4d78efbe426e410730e6267d182')
 
