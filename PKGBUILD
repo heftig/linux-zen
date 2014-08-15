@@ -6,14 +6,14 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.15.10
+pkgver=3.16.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://zen-kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'lzop' 'git')
 options=('!strip')
-source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.15/master"
+source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.16/master"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
@@ -21,10 +21,10 @@ source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.15/master"
         'change-default-console-loglevel.patch'
         )
 sha256sums=('SKIP'
-            '6abe9c679d7a47a8bf2744082aa6706b2696b3892a0d9c4cde929cd1c1b1a336'
-            '1389a4fb790c330aedd000c2b69bbb403aa0aaac99a22773d296e83830a06b48'
+            'd5fa86587d070b91b6e6e684fc5e2111599940675ea4432a77f81e07147167c3'
+            '8ca9c693ca0417639fbf84bd12e98c23020fcfb6054af9c7a8ca178db9f083eb'
             'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
-            'faced4eb4c47c4eb1a9ee8a5bf8a7c4b49d6b4d78efbe426e410730e6267d182')
+            '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 
 _kernelname=${pkgbase#linux}
 
@@ -37,6 +37,9 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/${_srcname}"
+
+  # add upstream patch
+  #patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
