@@ -6,7 +6,7 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.16.3
+pkgver=3.16.4
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://zen-kernel.org/"
@@ -290,6 +290,7 @@ _package-docs() {
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 for _p in ${pkgname[@]}; do
   eval "package_${_p}() {
+    $(declare -f "_package${_p#${pkgbase}}")
     _package${_p#${pkgbase}}
   }"
 done
