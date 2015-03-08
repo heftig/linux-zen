@@ -6,14 +6,14 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=3.18.6
+pkgver=3.19.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://zen-kernel.org/"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'lzop' 'git')
+makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git')
 options=('!strip')
-source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.18/master"
+source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.19/master"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
@@ -21,8 +21,8 @@ source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=3.18/master"
         'change-default-console-loglevel.patch'
         )
 sha256sums=('SKIP'
-            'd8e265cc6c500ed5317734b6e90120c7840920fb8428419372660c2b557f6807'
-            '4d9110c937d07b1f04e7a1ecc7d0c62aa38a5a063c45571c0b79b542bae612bd'
+            '7041352870b161a4f1b140a658d46048e674479ba0c9e73a198821eb729e4bd6'
+            'a93c50a0415b99ca7d56449d5818ec17edfda1d9fd7219fc79cd33adbfe52de2'
             'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 
@@ -39,7 +39,7 @@ prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  # patch -p1 -i "${srcdir}/patch-${pkgver}"
+  #patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
@@ -132,8 +132,6 @@ _package() {
   rm -f "${pkgdir}"/lib/modules/${_kernver}/{source,build}
   # remove the firmware
   rm -rf "${pkgdir}/lib/firmware"
-  # gzip -9 all modules to save 100MB of space; disabled for better deltapkgs
-  #find "${pkgdir}" -name '*.ko' -exec gzip -9 {} \;
   # make room for external modules
   ln -s "../extramodules-${_basekernel}${_kernelname:--ARCH}" "${pkgdir}/lib/modules/${_kernver}/extramodules"
   # add real version for building modules and running depmod from post_install/upgrade
