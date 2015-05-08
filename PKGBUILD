@@ -6,7 +6,7 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=4.0.1
+pkgver=4.0.2
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://zen-kernel.org/"
@@ -21,8 +21,8 @@ source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=4.0/master"
         'change-default-console-loglevel.patch'
         )
 sha256sums=('SKIP'
-            'b702b69f04f95daef369cc4318957641043d7bc430e10008ee4cf948c640bf4b'
-            '5f7d76855fd03e3e7aa546dedda2c137a9d0f271cfb5938582b46a885e5d10df'
+            '7bf7ac3b233d716240d12ffd21cb80c4013cefa9e6603013435060af50a92fc7'
+            'e1a030f11fe996936d483e7875c53e180c8af0e29a30f1d6fccc0caa20c5bc2b'
             'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 
