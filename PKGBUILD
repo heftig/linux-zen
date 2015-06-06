@@ -6,7 +6,7 @@
 pkgbase=linux-zen           # Build -zen kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=zen-kernel
-pkgver=4.0.4
+pkgver=4.0.5
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://zen-kernel.org/"
