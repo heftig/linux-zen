@@ -21,8 +21,8 @@ source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=4.0/master"
         'change-default-console-loglevel.patch'
         )
 sha256sums=('SKIP'
-            'f0b1567aff1592cc496de79aaa07e2fa08dcb0e3267e72104e697254497772c5'
-            'dde04fd07ed6cc55ace250bc1e6b560c2f6a3e0fa0bc2c20eb04e7660ec57d58'
+            '18fdc44cd1e53c59298b69b27253cfe3b28ae4fd8ef247413e09fc3da22cc899'
+            '41d31d6fea09457df6a5d2b25763047ffaf77e8ddabdedf2427a80076a71d12d'
             'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 
