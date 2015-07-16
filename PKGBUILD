@@ -9,11 +9,11 @@ _srcname=zen-kernel
 pkgver=4.1.2
 pkgrel=1
 arch=('i686' 'x86_64')
-url="https://zen-kernel.org/"
+url="https://github.com/zen-kernel/zen-kernel"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git')
 options=('!strip')
-source=("git+https://github.com/${_srcname}/${_srcname}.git#branch=4.1/master"
+source=("git+${url}#branch=4.1/master"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
